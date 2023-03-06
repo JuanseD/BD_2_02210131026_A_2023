@@ -10,4 +10,4 @@ Taller 4(20/02/2023): https://github.com/JuanseD/BD_2_02210131026_A_2023/blob/a1
 
 Taller 5(23/02/2023): https://github.com/JuanseD/BD_2_02210131026_A_2023/blob/167d1851142fcbde56bed639cf2276d5b2ee6cf8/Taller%205.rar
 
-Taller 6(27/02/2023): 
+Taller 6(27/02/2023): https://github.com/JuanseD/BD_2_02210131026_A_2023/blob/3432eecc9fcbecb179aca512eb7f2d2c6273fad6/Taller%206.pdf

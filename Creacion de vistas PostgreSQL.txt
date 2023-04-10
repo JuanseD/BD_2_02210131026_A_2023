@@ -1,0 +1,205 @@
+Vista Materias
+CREATE VIEW materias AS 
+SELECT m.nombre AS materia, 
+       pe.nombre, 
+       m.descripcion, 
+       m.creditos AS creditos_necesarios 
+FROM materia m 
+INNER JOIN programa_estudio pe ON pe.id = m.id;
+Estudiantes informacion completa
+CREATE VIEW estudiantes AS
+SELECT estudiante.*, genero.genero AS genero, nacionalidad.nacionalidad AS nacionalidad, tipo_documento.tipo_documento AS tipo_documento
+FROM estudiante
+INNER JOIN genero ON estudiante.id_genero = genero.id
+INNER JOIN nacionalidad ON estudiante.id_nacionalidad = nacionalidad.id
+INNER JOIN tipo_documento ON estudiante.id_tipo_documento = tipo_documento.id;
+Cantidad de estudiantes en los grupos
+CREATE VIEW vista_admisiones_grupo AS
+SELECT grupo.nombre AS grupo, COUNT(estudiante_grupo.id_estudiante) AS cantidad_estudiantes
+FROM estudiante_grupo
+INNER JOIN estudiante ON estudiante_grupo.id_estudiante = estudiante.id
+INNER JOIN grupo ON estudiante_grupo.id_grupo = grupo.id
+GROUP BY grupo.nombre;
+Cantidad de estudiantes matriculados segun su nacionalidad
+CREATE VIEW admisiones_nacionalidad AS
+SELECT nacionalidad.nacionalidad  AS nacionalidad, COUNT(estudiante.id) AS cantidad_estudiantes
+FROM estudiante
+INNER JOIN nacionalidad ON estudiante.id_nacionalidad = nacionalidad.id
+GROUP BY nacionalidad.nacionalidad;
+Cantidad de estudiantes matriculados segun su tipo de documento
+CREATE VIEW admisiones_tipo_documento AS
+SELECT tipo_documento.tipo_documento AS tipo_documento, COUNT(estudiante.id) AS cantidad_estudiantes
+FROM estudiante
+INNER JOIN tipo_documento ON estudiante.id_tipo_documento = tipo_documento.id
+GROUP BY tipo_documento.tipo_documento;
+Notas de los estudiantes
+CREATE VIEW promedio_estudiantes AS 
+SELECT estudiante.nombre, estudiante.apellido, AVG(nota.corte_1 + nota.corte_2 + nota.corte_3/3) AS promedio
+FROM estudiante 
+INNER JOIN nota ON estudiante.id = nota.id_estudiante 
+GROUP BY estudiante.id;
+Estudiantes con cantidad de materias matriculadas
+CREATE VIEW estudiantes_con_cantidad_materias AS 
+SELECT estudiante.nombre, estudiante.apellido, COUNT(matricula.id) AS cantidad_materias 
+FROM estudiante 
+INNER JOIN matricula ON estudiante.id = matricula.id 
+GROUP BY estudiante.id;
+Estudiantes con materias aprovadas
+CREATE VIEW estudiantes_con_materias_aprobadas AS 
+SELECT estudiante.nombre, estudiante.apellido, COUNT(materia.id) AS cantidad_materias_aprobadas 
+FROM estudiante 
+INNER JOIN matricula ON estudiante.id = matricula.id 
+INNER JOIN materia ON matricula.id_materia  = materia.id 
+INNER JOIN nota ON estudiante.id = nota.id_estudiante  AND materia.id  = nota.id_materia  
+WHERE nota.corte_1 >= 3 AND nota.corte_2 >= 3 AND nota.corte_3 >= 3 
+GROUP BY estudiante.id;
+Estudiantes con sus materias y notas
+CREATE VIEW estudiantes_con_materias_y_notas AS 
+SELECT estudiante.nombre, estudiante.apellido, materia.nombre AS materia, nota.corte_1, nota.corte_2, nota.corte_3 
+FROM estudiante 
+INNER JOIN matricula ON estudiante.id = matricula.id 
+INNER JOIN materia ON matricula.id_materia  = materia.id 
+INNER JOIN nota ON estudiante.id = nota.id_estudiante AND materia.id = nota.id_materia;
+Promedio de notas por corte
+CREATE VIEW promedio_notas_por_corte AS
+SELECT e.id, e.nombre AS estudiantes, p.nombre,
+AVG(n.corte_1) AS promedio_corte_1,
+AVG(n.corte_2) AS promedio_corte_2,
+AVG(n.corte_3) AS promedio_corte_3
+FROM estudiante e
+INNER JOIN matricula m ON e.id = m.id_estudiante
+INNER JOIN programa_estudio p ON m.id = p.id
+INNER JOIN nota n ON e.id = n.id_estudiante AND m.id = n.id
+GROUP BY e.id, p.nombre;
+Documentos personales aceptados en la solicitud de admision
+CREATE VIEW solicitudes_admision_tipo_documento AS
+SELECT documento_personal.documento_personal, COUNT(solicitud_admision.estado) AS total_solicitudes
+FROM solicitud_admision
+INNER JOIN documento_personal ON solicitud_admision.estado::text = documento_personal.id::text
+GROUP BY documento_personal.documento_personal;
+Solicitudes con sus debidos estudiantes
+CREATE VIEW solicitudes_con_estatus AS
+SELECT s.id , s.fecha , s.estado, e.nombre AS estudiante, e.correo AS correo_estudiante
+FROM solicitud_admision s
+INNER JOIN estudiante e ON s.id_estudiante  = e.id;
+Materias con sus debidos programas
+CREATE VIEW materias_con_programa AS
+SELECT m.nombre AS materia, p.nombre AS programa_estudio
+FROM materia m
+INNER JOIN programa_estudio_materia pm ON m.id  = pm.id
+INNER JOIN programa_estudio p ON pm.id_programa_estudio  = p.id;
+Solicitudes por dia
+CREATE VIEW solicitudes_por_dia AS
+SELECT DATE(s.fecha) AS fecha, COUNT(*) AS total_solicitudes
+FROM solicitud_admision s
+GROUP BY DATE(s.fecha);
+Materias con sus debidos prerequisitos
+CREATE VIEW materia_prerequisitos AS 
+SELECT m.nombre AS materia, string_agg(pr.nombre, ', ' ORDER BY pr.nombre ASC) AS prerequisitos 
+FROM materia m 
+LEFT JOIN prerequisito p ON m.id = p.id
+LEFT JOIN materia pr ON p.id_programa_estudio_prerequisito  = pr.id
+GROUP BY m.nombre;
+Solicitudes en los programas de estudio
+CREATE VIEW solicitudes_programa_estudio AS 
+SELECT programa_estudio.nombre AS programa_estudio, COUNT(solicitud_admision.id_estudiante) AS conteo 
+FROM solicitud_admision 
+JOIN programa_estudio ON solicitud_admision.id_programa_estudio = programa_estudio.id 
+GROUP BY programa_estudio.id;
+Estudiantes con sus programas de estudio
+CREATE VIEW estudiantes_solicitantes AS
+SELECT e.nombre, e.apellido, p.nombre AS programa_estudio
+FROM estudiante e
+JOIN solicitud_admision sa ON e.id = sa.id 
+JOIN programa_estudio p ON sa.id_programa_estudio  = p.id;
+Materias Pendientes
+CREATE VIEW materias_pendientes AS
+SELECT e.nombre, e.apellido, m.nombre AS materia_pendiente
+FROM estudiante e
+JOIN matricula ma ON e.id = ma.id_estudiante 
+JOIN programa_estudio_materia pm ON ma.id_programa_estudio  = pm.id
+JOIN materia m ON pm.id_materia  = m.id
+LEFT JOIN nota n ON ma.id = n.id_materia  AND m.id = n.id
+WHERE n.id IS NULL;
+Solicitudes con su programa de estudio y su metodo de pago
+CREATE VIEW solicitudes_programa_pago AS
+SELECT pe.nombre AS programa_estudio, mp.metodo_pago  AS metodo_pago, COUNT(DISTINCT sa.id) AS cantidad_solicitudes
+FROM solicitud_admision sa 
+JOIN programa_estudio pe ON sa.id_programa_estudio  = pe.id 
+JOIN metodo_pago mp ON sa.id_programa_estudio  = mp.id 
+GROUP BY pe.id, mp.id;
+Estudiantes matriculados en el año con sus programas de estudio
+CREATE VIEW estudiantes_matriculados_por_año_programa AS
+SELECT EXTRACT(YEAR FROM m.fecha_matricula) AS año, p.nombre AS programa_estudio, COUNT(*) AS total_estudiantes
+FROM matricula m
+JOIN programa_estudio p ON m.id_programa_estudio = p.id
+GROUP BY EXTRACT(YEAR FROM m.fecha_matricula), p.nombre;
+Numero de solicitudes por nacionalidad
+CREATE VIEW num_solicitudes_nacionalidad AS
+SELECT nacionalidad.nacionalidad AS nacionalidad,
+COUNT(solicitud_admision.id) AS num_solicitudes
+FROM nacionalidad
+LEFT JOIN solicitud_admision ON nacionalidad.id = solicitud_admision.id 
+GROUP BY nacionalidad.nacionalidad;
+Metodos de pago de los estudiantes
+CREATE VIEW metodos_pago_estudiantes AS
+SELECT e.id, e.nombre, e.apellido, mp.metodo_pago  AS metodo_pago
+FROM estudiante e
+JOIN metodo_pago mp ON e.id  = mp.id;
+Documentos personales de los estudiantes
+CREATE VIEW documentos_personales_estudiantes AS
+SELECT e.id, e.nombre, e.apellido, dp.documento_personal  AS documento_personal
+FROM estudiante e
+JOIN documento_personal dp ON e.id  = dp.id;
+Estudiantes sin matricula
+CREATE VIEW estudiantes_sin_matricula AS 
+SELECT estudiante.id, estudiante.nombre, estudiante.apellido 
+FROM estudiante 
+LEFT JOIN matricula ON estudiante.id = matricula.id_estudiante 
+WHERE matricula.id IS NULL;
+Materias sin prerequisitos
+CREATE VIEW materias_sin_prerequisitos AS 
+SELECT materia.id, materia.nombre 
+FROM materia 
+LEFT JOIN prerequisito ON materia.id = prerequisito.id
+WHERE prerequisito.id IS NULL;
+Programas de estudio con la cantidad de materias y creditos
+CREATE VIEW programas_de_estudio_con_cantidad AS
+SELECT pe.nombre, COUNT(pem.id_materia) AS cantidad_materias, SUM(m.creditos) AS total_creditos
+FROM programa_estudio pe
+JOIN programa_estudio_materia pem ON pe.id = pem.id_programa_estudio 
+JOIN materia m ON pem.id_materia = m.id
+GROUP BY pe.nombre;
+Estudiantes que no han matriculado psicologia
+CREATE VIEW estudiantes_sin_matricular_psicologia AS 
+SELECT e.*
+FROM estudiante e
+WHERE NOT EXISTS (
+    SELECT 1 
+    FROM matricula m 
+    INNER JOIN programa_estudio p ON m.id_programa_estudio = p.id 
+    WHERE m.id_estudiante = e.id AND p.nombre = 'Psicologia'
+);
+Estudiantes que no han matriculado Ingenieria de Sistemas
+CREATE VIEW estudiantes_sin_matricular_ing_sistemas AS 
+SELECT e.*
+FROM estudiante e
+WHERE NOT EXISTS (
+    SELECT 1 
+    FROM matricula m 
+    INNER JOIN programa_estudio p ON m.id_programa_estudio = p.id 
+    WHERE m.id_estudiante = e.id AND p.nombre = 'Ingenieria de Sistemas'
+);
+Cantidad de Estudiantes en el Grupo
+CREATE VIEW cantidad_estudiantes_por_grupo AS
+SELECT eg.id_grupo, g.nombre AS nombre_grupo, COUNT(*) AS cantidad_estudiantes
+FROM estudiante_grupo eg
+JOIN grupo g ON eg.id_grupo = g.id
+GROUP BY eg.id_grupo, g.nombre;
+Materias con cantidad de sus estudiantes
+CREATE VIEW materias_con_estudiantes AS
+SELECT m.nombre AS materia, COUNT(eg.id_estudiante) AS cantidad_estudiantes
+FROM materia m
+LEFT JOIN programa_estudio_materia pem ON m.id = pem.id_materia 
+LEFT JOIN estudiante_grupo eg ON pem.id_materia = eg.id_estudiante AND m.id = eg.id_estudiante 
+GROUP BY m.nombre ;

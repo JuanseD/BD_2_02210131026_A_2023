@@ -16,4 +16,4 @@ Taller 7(16/03/2023): https://github.com/JuanseD/BD_2_02210131026_A_2023/blob/db
 
 Taller 8(10/04/2023): https://github.com/JuanseD/BD_2_02210131026_A_2023/blob/a94d77f469e8519d8fc6334b1c107c1528551f00/Creacion%20de%20vistas%20MySQL.txt Y https://github.com/JuanseD/BD_2_02210131026_A_2023/blob/54a3d90c5bdc79c2ca1bb83cecdb78467b69fd54/Creacion%20de%20vistas%20PostgreSQL.txt
 
-Taller 9(17/04/2023): 
+Taller 9(17/04/2023): https://github.com/JuanseD/BD_2_02210131026_A_2023/blob/3756165ecff8ea3fe7aa22d6b094faeb4baf6341/Creacion%20de%20vistas.txt

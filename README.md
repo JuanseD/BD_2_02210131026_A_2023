@@ -15,3 +15,5 @@ Taller 6(27/02/2023): https://github.com/JuanseD/BD_2_02210131026_A_2023/blob/34
 Taller 7(16/03/2023): https://github.com/JuanseD/BD_2_02210131026_A_2023/blob/db2c7108b25134d29630d145c4647375ce188df6/Taller%207.pdf Y https://github.com/JuanseD/BD_2_02210131026_A_2023/blob/6c647fd700f87342c7c7ff79dfa82e3ec48ef376/Uso%20del%20Manager%20Users%20en%20MySQL%20y%20PostgreSQL.pptx
 
 Taller 8(10/04/2023): https://github.com/JuanseD/BD_2_02210131026_A_2023/blob/a94d77f469e8519d8fc6334b1c107c1528551f00/Creacion%20de%20vistas%20MySQL.txt Y https://github.com/JuanseD/BD_2_02210131026_A_2023/blob/54a3d90c5bdc79c2ca1bb83cecdb78467b69fd54/Creacion%20de%20vistas%20PostgreSQL.txt
+
+Taller 9(17/04/2023): 

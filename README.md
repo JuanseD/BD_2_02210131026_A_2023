@@ -18,4 +18,4 @@ Taller 8(10/04/2023): https://github.com/JuanseD/BD_2_02210131026_A_2023/blob/a9
 
 Taller 9(17/04/2023): https://github.com/JuanseD/BD_2_02210131026_A_2023/blob/3756165ecff8ea3fe7aa22d6b094faeb4baf6341/Creacion%20de%20vistas.txt
 
-Taller 10(04/05/2023): 
+Taller 10(04/05/2023): https://github.com/JuanseD/BD_2_02210131026_A_2023/blob/85114032b7f087011533fca9cdad91992c1b22a3/Taller%20Ejercicios%20del%20Parcial.pdf

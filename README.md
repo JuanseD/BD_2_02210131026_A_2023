@@ -21,3 +21,5 @@ Taller 9(17/04/2023): https://github.com/JuanseD/BD_2_02210131026_A_2023/blob/37
 Taller 10(04/05/2023): https://github.com/JuanseD/BD_2_02210131026_A_2023/blob/85114032b7f087011533fca9cdad91992c1b22a3/Taller%20Ejercicios%20del%20Parcial.pdf
 
 Taller 11(07/05/2023): https://github.com/JuanseD/BD_2_02210131026_A_2023/blob/e3f63afb1b608b5b57428f815a4431a55c6e4663/Taller%20en%20Clase%2004-05-2023.txt
+
+Talle 12(19/05/2023): 

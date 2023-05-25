@@ -22,4 +22,4 @@ Taller 10(04/05/2023): https://github.com/JuanseD/BD_2_02210131026_A_2023/blob/8
 
 Taller 11(07/05/2023): https://github.com/JuanseD/BD_2_02210131026_A_2023/blob/e3f63afb1b608b5b57428f815a4431a55c6e4663/Taller%20en%20Clase%2004-05-2023.txt
 
-Talle 12(19/05/2023): https://github.com/JuanseD/BD_2_02210131026_A_2023/blob/4292868c84712bfee5692c8724c581433cd386f0/Taller%20BD.txt
+Taller 12(19/05/2023): https://github.com/JuanseD/BD_2_02210131026_A_2023/blob/4292868c84712bfee5692c8724c581433cd386f0/Taller%20BD.txt
